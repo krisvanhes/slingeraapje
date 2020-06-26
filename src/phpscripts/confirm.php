@@ -19,10 +19,12 @@ function getBookedToday()
 //        if ($enrolments) { // if the database has found any records from today
         foreach ($enrolments as $enrolment) {
             $lesson_ID = $enrolment['Lesson_ID'];
+
+
             echo "
                     <tr>
                         <td></td>
-                        <td>{$enrolment['l.Date']}</td>
+                        <td>{}</td>
                         <td></td>
                         <td></td>
                         <td></td>

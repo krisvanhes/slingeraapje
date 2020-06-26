@@ -1,6 +1,6 @@
 <?php include 'src/phpscripts/course.php' ?>
 
-<div class="container-fluid">
+<div class="container">
     <div class="row">
         <div class="col-md-8 mr-3 ml-5 row">
             <?php

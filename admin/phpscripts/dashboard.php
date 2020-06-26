@@ -5,7 +5,7 @@ function removeSuccesMessage()
     //remove the message after 5 seconds
     header('Refresh:0');
     sleep(5);
-    unset($goodMsg, $_SESSION['goodMsg']);
+    unset($goodMsg, $_SESSION['adminGoodMsg']);
     header('Refresh:0');
 }
 
@@ -65,15 +65,14 @@ function getEmployee()
 }
 
 
-function AddLesson($course_ID, $timestamp_ID, $date, $maxSpots, $spotsFree)
+function AddLesson($course_ID, $timestamp_ID, $date, $spotsFree)
 {
     // add course with all the details if everything is correct in the checkCourseForm function
     $db = $GLOBALS["db"];
     try {
-        $stmt = $db->prepare("INSERT INTO lesson (Course_ID, Timestamp_ID, Date, MaxSpots, SpotsFree) VALUES (?,?,?,?,?)");
-        $stmt->execute(array($course_ID, $timestamp_ID, $date, $maxSpots[0], $spotsFree[0]));
-
-        $_SESSION["goodMsg"][] = "De les is aangemaakt";
+        $stmt = $db->prepare("INSERT INTO lesson (Course_ID, Timestamp_ID, Date, SpotsFree) VALUES (?,?,?,?)");
+        $stmt->execute(array($course_ID, $timestamp_ID, $date, $spotsFree[0]));
+        $_SESSION["adminGoodMsg"][] = "De les is aangemaakt";
         echo '<script>window.location = window.location.href</script>';
     } catch (PDOException $e) {
         echo "Error: " . $e->getMessage();
@@ -93,14 +92,14 @@ function checkLessonForm()
         $spotsFree = $stmt->fetch();
 
         if (empty($course)) {
-            $_SESSION['errorMsg'][] = 'De cursus is niet ingevuld';
+            $_SESSION['adminErrorMsg'][] = 'De cursus is niet ingevuld';
         } elseif (empty($date)) {
-            $_SESSION['errorMsg'][] = 'Datum is niet ingevuld';
+            $_SESSION['adminErrorMsg'][] = 'Datum is niet ingevuld';
         } elseif (empty($timestamp)) {
-            $_SESSION['errorMsg'][] = 'Tijdstip is niet ingevuld';
+            $_SESSION['adminErrorMsg'][] = 'Tijdstip is niet ingevuld';
         } else {
-            unset($_SESSION['errorMsg']); // remove error messages
-            AddLesson($course, $timestamp, $date, $spotsFree, $spotsFree);
+            unset($_SESSION['adminErrorMsg']); // remove error messages
+            AddLesson($course, $timestamp, $date, $spotsFree);
         }
     } catch (PDOException $e) {
         echo "Error: " . $e->getMessage();
@@ -116,7 +115,7 @@ function AddCourse($title, $location, $employee, $price, $places, $image)
         $stmt = $db->prepare("INSERT INTO course (title, Location, Employee_ID, Price, maxSpots, Image) VALUES (?,?,?,?,?,?)");
         $stmt->execute([$title, $location, $employee, $price, $places, $image]);
 
-        $_SESSION["goodMsg"][] = "De cursus is toegevoegd en er kan nu een les van worden gemaakt";
+        $_SESSION["adminGoodMsg"][] = "De cursus is toegevoegd en er kan nu een les van worden gemaakt";
         echo '<script>window.location = window.location.href</script>';
 
     } catch (PDOException $e) {
@@ -137,27 +136,27 @@ function checkCourseForm()
     $target_file = $target_dir . basename($_FILES['image']['name']); // image from HTML form
 
     if (empty($title)) {
-        $_SESSION['errorMsg'][] = "Naam van de cursus is niet ingevuld";
+        $_SESSION['adminErrorMsg'][] = "Naam van de cursus is niet ingevuld";
     } elseif (empty($location)) {
-        $_SESSION['errorMsg'][] = "Locatie is niet ingevuld";
+        $_SESSION['adminErrorMsg'][] = "Locatie is niet ingevuld";
     } elseif (empty($employee)) {
-        $_SESSION['errorMsg'][] = "Medewerker is niet ingevuld";
+        $_SESSION['adminErrorMsg'][] = "Medewerker is niet ingevuld";
     } elseif (empty($price)) {
-        $_SESSION['errorMsg'][] = "Prijs per les is niet ingevuld";
+        $_SESSION['adminErrorMsg'][] = "Prijs per les is niet ingevuld";
     } elseif (empty($places)) {
-        $_SESSION['errorMsg'][] = "Aantal beschikbare plekken is niet ingevuld";
+        $_SESSION['adminErrorMsg'][] = "Aantal beschikbare plekken is niet ingevuld";
     } elseif (!move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
-        $_SESSION['errorMsg'][] = "Er is iets misgegaan met de afbeelding";
+        $_SESSION['adminErrorMsg'][] = "Er is iets misgegaan met de afbeelding";
     } elseif (!empty($title) && !empty($location) && !empty($employee) && !empty($price) && !empty($places) && !empty($target_file)) {
-        unset($_SESSION['errorMsg']); // remove error messages
+        unset($_SESSION['adminErrorMsg']); // remove error messages
         AddCourse($title, $location, $employee, $price, $places, $target_file);
     }
 }
 
 if (isset($_POST["AddCourse"])) {
-    unset($_SESSION['goodMsg'], $_SESSION['errorMsg']);
+    unset($_SESSION['adminGoodMsg'], $_SESSION['adminErrorMsg']);
     checkCourseForm();
 } elseif (isset($_POST["AddLesson"])) {
-    unset($_SESSION['goodMsg'], $_SESSION['errorMsg']);
+    unset($_SESSION['adminGoodMsg'], $_SESSION['adminErrorMsg']);
     checkLessonForm();
 }

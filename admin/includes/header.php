@@ -65,16 +65,16 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] && $_SESSION['role'] >
 <div class="container">
     <div class="col-md-12 text-center">
         <?php
-        if (isset($_SESSION["errorMsg"])) {
-            foreach ($_SESSION["errorMsg"] as $error) { ?>
+        if (isset($_SESSION["adminErrorMsg"])) {
+            foreach ($_SESSION["adminErrorMsg"] as $error) { ?>
                 <div class="alert alert-danger alert-dismissible" role="alert">
                     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                     <?php echo $error; ?>
                 </div>
             <?php }
         }
-        if (isset($_SESSION["goodMsg"])) {
-            foreach ($_SESSION["goodMsg"] as $message) { ?>
+        if (isset($_SESSION["adminGoodMsg"])) {
+            foreach ($_SESSION["adminGoodMsg"] as $message) { ?>
                 <div class="alert alert-success alert-dismissible" role="alert">
                     <a href="#" class="close" data-dismiss="alert" aria-label="close"
                        id="disableGoodMessage">&times;</a>

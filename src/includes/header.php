@@ -97,6 +97,7 @@ session_start()
     </div>
 </div>
 
+<?php if(isset($_SESSION['errorMsg']) || isset($_SESSION['goodMsg'])){ ?>
 <div class="container">
     <div class="col-md-12">
         <?php
@@ -136,3 +137,4 @@ session_start()
         } ?>
     </div>
 </div>
+<?php } ?>

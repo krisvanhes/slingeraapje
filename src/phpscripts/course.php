@@ -46,7 +46,7 @@ function getAllLesson()
                      <div class='col-md-5 text-right'>{$beginTime} - {$endTime}</div>
                      
                      <div class='col-md-5'>Beschikbare plekken</div>
-                     <div class='col-md-5 text-right'>{$lesson['SpotsFree']} / {$lesson['MaxSpots']}</div>
+                     <div class='col-md-5 text-right'>{$lesson['SpotsFree']} / {$course['MaxSpots']}</div>
                      
                      <div class='col-md-5'>Prijs</div>
                      <div class='col-md-5 text-right'>€ {$course['Price']}</div>
@@ -116,28 +116,33 @@ function checkReservation()
             $price = str_replace('.', ',', number_format(substr($item['Price'], 0, -2), '2')); // price for counting
 
             echo
-            "<div class='row'>
-
-                    <div class='col-md-12 text-right'>
-                        <form action='' method='POST'>
-                            <button type='submit' class='text-danger btn btn-link' name='delete$key'>&times;</button>
-                        </form>
-                    </div>
-                    
-                    <div class='col-md-6'> Cursus</div>
-                    <div class='col-md-6 text-right'>$course</div>
-                    
-                    <div class='col-md-6'> Locatie</div>
-                    <div class='col-md-6 text-right'>$location</div>
-                    
-                    <div class='col-md-6'> Datum</div>
-                    <div class='col-md-6 text-right'>$date</div>
-                    
-                    <div class='col-md-6'> Prijs</div>
-                    <div class='col-md-6 text-right'>€$price</div>
-                    
+            "
+            <form action='' method='POST'>
+                <div class='col text-right'>
+                    <button type='submit' class='text-danger btn btn-link' name='delete$key'>&times;</button>
                 </div>
             </form>
+               
+            <div class='row'>
+                <div class='col text-left'> Cursus</div>
+                <div class='col text-right'>$course</div>
+            </div>
+            
+            <div class='row'>
+                <div class='col text-left'> Locatie</div>
+                <div class='col text-right'>$location</div>
+            </div>
+            
+            <div class='row'>
+                <div class='col text-left'> Datum</div>
+                <div class='col text-right'>$date</div>
+            </div>
+            
+            <div class='row'>
+                <div class='col text-left'> Prijs</div>
+                <div class='col text-right'>€$price</div>
+            </div>
+                  
             <hr>";
 
             $price = str_replace(',', '.', number_format(substr($item['Price'], 0, -2), '2')); // price for counting
@@ -149,8 +154,8 @@ function checkReservation()
             }
         }
         echo "<div class='row'>
-                <div class='col-md-6'>Totaalprijs</div>
-                <div class='col-md-6 text-right'>€{$totalprice}</div>
+                <div class='col text-left'>Totaalprijs</div>
+                <div class='col text-right'>€{$totalprice}</div>
               </div>";
 
         echo "<form action='' method='POST'>
@@ -163,7 +168,6 @@ function checkReservation()
 
     if (isset($_POST['courseSign'])) { // if form is submitted
         if (isset($_SESSION['bookedLesson']) & !empty($_SESSION['bookedLesson'])) {
-            $courses = [];
             foreach ($_SESSION['bookedLesson'] as $key => $item) {
                 $title = $item['Course'];
 
@@ -177,10 +181,6 @@ function checkReservation()
         } else {
             $_SESSION['bookedLesson'][] = array('Course_ID' => $_POST['Course_ID'], 'Course_Title' => $_POST['Course_Title'], 'Lesson_ID' => $_POST['Lesson_ID'], 'Location' => $_POST['Location'], 'Date' => $_POST['Date'], 'Price' => $_POST['Price']);
             echo '<script>$(location).attr("href", window.location)</script>';
-        }
-
-        foreach ($courses as $course) {
-            var_dump($course);
         }
     }
 
